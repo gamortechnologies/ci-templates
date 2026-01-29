@@ -9,11 +9,11 @@ on:
       os_list:
         required: true
         type: string
+
     #ading secrets
     secrets:
       AWS_ROLE_ARN:
         required : true
-
 
 jobs:
   called_workflow_terraform-ci:
