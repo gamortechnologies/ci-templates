@@ -1,0 +1,38 @@
+name: Node CI Template
+
+on:
+  workflow_call:
+    inputs:
+      node_versions:
+        required: true
+        type: string
+      working_directory:
+        required: true
+        type: string
+
+jobs:
+  node-ci:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ${{ fromJson(inputs.node_versions) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: ${{ inputs.working_directory }}/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{ inputs.working_directory }}
+
+      - name: Run tests
+        run: npm test
+        working-directory: ${{ inputs.working_directory }}

@@ -44,40 +44,6 @@ ci-templates/
 
 ### 📄 `terraform-matrix.yml`
 
-```yaml
-name: Terraform Matrix Template
-
-on:
-  workflow_call:
-    inputs:
-      terraform_versions:
-        required: true
-        type: string
-      os_list:
-        required: true
-        type: string
-    secrets:
-      AWS_ROLE_ARN:
-        required: true
-
-jobs:
-  terraform:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: ${{ fromJson(inputs.os_list) }}
-        tf_version: ${{ fromJson(inputs.terraform_versions) }}
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: ${{ matrix.tf_version }}
-
-      - run: terraform init
-      - run: terraform validate
-```
 
 No triggers except `workflow_call`.
 This file **cannot run alone** — by design.
