@@ -1,0 +1,60 @@
+name: Terraform Matrix Template
+
+on:
+  workflow_call:
+    inputs:
+      terraform_versions:
+        required: true
+        type: string
+      os_list:
+        required: true
+        type: string
+    #ading secrets
+    secrets:
+      AWS_ROLE_ARN:
+        required : true
+
+
+jobs:
+  called_workflow_terraform-ci:
+    name: Terraform (${{ matrix.os }} / TF ${{ matrix.tf_version }}) #the name: automatic
+    runs-on: ${{ matrix.os }}
+
+    #matrix strategy
+    strategy:
+      fail-fast: false  # do not exit when one fails, continue the next iteration
+      matrix:
+        os: ${{ fromJson(inputs.os_list) }}
+        tf_version: ${{ fromJson(inputs.terraform_versions) }}
+
+    #enable ci automation mode
+    env:
+      TF_IN_AUTOMATION: true
+      TF_INPUT: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ matrix.tf_version }}
+
+      - name: Cache Terraform providers
+        uses: actions/cache@v4
+        with:
+          path: ~/.terraform.d/plugin-cache
+          key: terraform-${{ runner.os }}-${{ matrix.tf_version }}-${{ hashFiles('**/*.tf') }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
