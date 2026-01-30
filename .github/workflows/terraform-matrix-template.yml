@@ -65,16 +65,16 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-        working-directory: ${{ fromJson(inputs.twd) }}
+        working-directory: ${{inputs.twd}}
 
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
-        working-directory: ${{ fromJson(inputs.twd) }}
+        working-directory: ${{inputs.twd}}
 
       - name: Terraform Validate
         run: terraform validate
-        working-directory: ${{ fromJson(inputs.twd) }}
+        working-directory: ${{inputs.twd}}
 
       - name: Terraform Plan
         run: terraform plan
-        working-directory: ${{ fromJson(inputs.twd) }}
+        working-directory: ${{inputs.twd}}
