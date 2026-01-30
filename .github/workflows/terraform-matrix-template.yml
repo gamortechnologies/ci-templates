@@ -15,6 +15,12 @@ on:
       AWS_ROLE_ARN:
         required : true
 
+#for the oidc
+permissions:
+  id-token: write
+  contents: read
+
+
 jobs:
   called_workflow_terraform-ci:
     name: Terraform (${{ matrix.os }} / TF ${{ matrix.tf_version }}) #the name: automatic
