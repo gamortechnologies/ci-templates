@@ -9,6 +9,9 @@ on:
       os_list:
         required: true
         type: string
+      twd:  # terraform working directory
+        required: true
+        type: string
 
     #ading secrets
     secrets:
@@ -62,12 +65,16 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        working-directory: ${{ fromJson(inputs.twd) }}
 
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
+        working-directory: ${{ fromJson(inputs.twd) }}
 
       - name: Terraform Validate
         run: terraform validate
+        working-directory: ${{ fromJson(inputs.twd) }}
 
       - name: Terraform Plan
         run: terraform plan
+        working-directory: ${{ fromJson(inputs.twd) }}
