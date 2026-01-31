@@ -19,7 +19,7 @@ on:
         required : true
 
 #for the oidc
-permissions:
+permissions:    # Giving the permision to request for tokens from the Github OIDC Provider
   id-token: write
   contents: read
 
