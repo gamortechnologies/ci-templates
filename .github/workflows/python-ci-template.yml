@@ -29,9 +29,13 @@ jobs:
 
       - name: Install dependencies
         run: |
+          ls 
+          pwd
           pip install -r requirements.txt
         working-directory: ${{ inputs.working_directory }}
 
       - name: Run tests
-        run: pytest
+        run: |
+        cd test
+        pytest
         working-directory: ${{ inputs.working_directory }}
