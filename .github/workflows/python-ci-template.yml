@@ -19,11 +19,6 @@ jobs:
       matrix:
         python: ${{ fromJson(inputs.python_versions) }}
 
-  #enable ci automation mode | reduce the verbosity of text output
-    env:
-      TF_IN_AUTOMATION: true
-      TF_INPUT: false
-
     steps:
       - uses: actions/checkout@v4
 
@@ -35,11 +30,11 @@ jobs:
       - name: Install dependencies
         run: |
           echo $PWD
-          pip install -r requirements.txt
+          pip install -r requirements.txt --quiet
         working-directory: ${{ inputs.working_directory }}
 
       - name: Run tests
         run: |
           export PYTHONPATH=$PWD
-          pytest -v
+          pytest -q
         working-directory: ${{ inputs.working_directory }}
