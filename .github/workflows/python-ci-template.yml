@@ -29,12 +29,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ls 
-          pwd
+          echo $PWD
           pip install -r requirements.txt
         working-directory: ${{ inputs.working_directory }}
 
       - name: Run tests
         run: |
-          pytest
+          export PYTHONPATH = $PWD
+          pytest -v
         working-directory: ${{ inputs.working_directory }}
