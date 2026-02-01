@@ -35,6 +35,6 @@ jobs:
 
       - name: Run tests
         run: |
-          export PYTHONPATH = $PWD
+          export PYTHONPATH=$PWD
           pytest -v
         working-directory: ${{ inputs.working_directory }}
